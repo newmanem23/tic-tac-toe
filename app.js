@@ -1,14 +1,30 @@
 const gameBoard = (function(doc) {
-    const boardArray = ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'];
+    const boardArray = Array.apply("", Array(9));
     const boardElement = doc.querySelector('#board');
     const renderBoard = () => {
         boardElement.innerHTML = '';
         for ([index, value] of boardArray.entries()) {
             const tile = doc.createElement('div')
             tile.classList.add('tile');
-            tile.innerHTML = value;
+            if (value) {
+                tile.innerHTML = value;
+            }
             tile.dataset.index = index;
+            tile.addEventListener("click", (e) => {
+                selectTile(e);
+            });
             boardElement.appendChild(tile);
+        }
+    }
+    const selectTile = (e) => {
+        const index = e.srcElement.dataset.index;
+        console.log(index);
+        console.log(boardArray[index]);
+
+        if (!boardArray[index]) {
+            boardArray[index] = 'X';
+            console.log(boardArray);
+            gameBoard.renderBoard();
         }
     }
     return {
@@ -16,8 +32,5 @@ const gameBoard = (function(doc) {
     }
 })(document);
 
-const btn = document.querySelector('#render-button');
-btn.addEventListener("click", () => {
-    gameBoard.renderBoard();
-});
+gameBoard.renderBoard();
 
