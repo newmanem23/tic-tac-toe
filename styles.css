@@ -36,9 +36,9 @@ h1 {
 
 .tile {
     background-color: var(--secondary);
-    text-align: center;
     font-size: 72px;
-    padding: 0.5rem;
+    display: grid;
+    place-items: center;
 }
 
 .tile:hover {

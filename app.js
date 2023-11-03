@@ -1,6 +1,7 @@
 const gameBoard = (function(doc) {
     const boardArray = Array.apply("", Array(9));
     const boardElement = doc.querySelector('#board');
+
     const renderBoard = () => {
         boardElement.innerHTML = '';
         for ([index, value] of boardArray.entries()) {
@@ -16,15 +17,12 @@ const gameBoard = (function(doc) {
             boardElement.appendChild(tile);
         }
     }
+    
     const selectTile = (e) => {
         const index = e.srcElement.dataset.index;
-        console.log(index);
-        console.log(boardArray[index]);
-
         if (!boardArray[index]) {
             boardArray[index] = 'X';
-            console.log(boardArray);
-            gameBoard.renderBoard();
+            renderBoard();
         }
     }
     return {
