@@ -1,34 +1,95 @@
-const gameBoard = (function(doc) {
-    const boardArray = Array.apply("", Array(9));
-    const boardElement = doc.querySelector('#board');
+const GameBoard = (() => {
+    const board = new Array(9);
 
-    const renderBoard = () => {
-        boardElement.innerHTML = '';
-        for ([index, value] of boardArray.entries()) {
-            const tile = doc.createElement('div')
-            tile.classList.add('tile');
-            if (value) {
-                tile.innerHTML = value;
-            }
-            tile.dataset.index = index;
-            tile.addEventListener("click", (e) => {
-                selectTile(e);
-            });
-            boardElement.appendChild(tile);
+    const getBoard = () => board;
+    
+    const selectTile = (index, player) => {
+        if (!board[index]) {
+            board[index] = player.marker
         }
+    }
+
+    const printBoard = () => {
+        console.log(board);
     }
     
-    const selectTile = (e) => {
-        const index = e.srcElement.dataset.index;
-        if (!boardArray[index]) {
-            boardArray[index] = 'X';
-            renderBoard();
+    return {
+        getBoard,
+        selectTile,
+        printBoard,
+    }
+})();
+
+
+const GameController = (() => {
+    // Players array with player objects within
+    const players = [
+        {
+            name: 'Player',
+            marker: 'X'
+        },
+        {
+            name: 'Computer',
+            marker: 'O'
+        }
+    ];
+    let activePlayer = players[0];
+
+    // Switch player turn function
+    const switchPlayerTurn = () => {
+        activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    };
+
+    // Returns active player
+    const getActivePlayer = () => activePlayer;
+
+
+    const printNewRound = () => {
+        GameBoard.printBoard();
+        console.log(`${getActivePlayer().name}'s turn.`)
+    }
+
+    const playRound = (index) => {
+        console.log(`${getActivePlayer().name} has placed ${getActivePlayer().marker} in index ${index}.`)
+        GameBoard.selectTile(index, getActivePlayer());
+
+        switchPlayerTurn();
+        printNewRound();
+    }
+
+    return {
+        playRound,
+        getActivePlayer,
+    };
+})();
+
+const ScreenController = (() => {
+    const boardDiv = document.querySelector('#board');
+    const board = GameBoard.getBoard()
+
+    const updateScreen = () => {
+        // Clear the board
+        boardDiv.innerHTML = '';
+        
+        for (const [index, value] of board.entries()) {
+            const tile = document.createElement('div');
+            tile.classList.add('tile');
+            tile.dataset.index = index;
+            tile.innerHTML = value;
+            tile.addEventListener("click", clickHandler)
+            boardDiv.appendChild(tile);
         }
     }
-    return {
-        renderBoard,
+
+    const clickHandler = (e) => {
+        const index = e.target.dataset.index;
+        if (!board[index]){
+            GameController.playRound(index);
+            updateScreen();
+        }
+
     }
-})(document);
 
-gameBoard.renderBoard();
-
+    // Initial render
+    updateScreen();
+})();

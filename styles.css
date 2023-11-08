@@ -7,18 +7,19 @@
 
 :root {
     --tile-size: 125px;
-    --text: #000000;
-    --background: #ffffff;
-    --primary: #abdec6;
-    --secondary: #b6e1e2;
-    --accent: #399093;
+    --text: #0e110f;
+    --background: #e3e8e5;
+    --primary: #343d3c;
+    --secondary: #cbcfd2;
+    --accent: #606b71;
 }
 
 body {
     display: grid;
     place-items: center;
+    height: 75vh;
     background-color: var(--background);
-    color: var(--text);
+    color: var(--primary);
 }
 
 h1 {
@@ -30,6 +31,7 @@ h1 {
 .board {
     display: grid;
     gap: 0.5rem;
+    color: var(--primary);
     grid-template-columns: repeat(3, var(--tile-size));
     grid-template-rows: repeat(3, var(--tile-size));
 }
@@ -43,5 +45,5 @@ h1 {
 
 .tile:hover {
     cursor: pointer;
-    background-color: var(--primary);
+    background-color: var(--accent);
 }
