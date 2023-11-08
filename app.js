@@ -43,19 +43,42 @@ const GameController = (() => {
     // Returns active player
     const getActivePlayer = () => activePlayer;
 
-
-    const printNewRound = () => {
-        GameBoard.printBoard();
-        console.log(`${getActivePlayer().name}'s turn.`)
-    }
-
     const playRound = (index) => {
         console.log(`${getActivePlayer().name} has placed ${getActivePlayer().marker} in index ${index}.`)
         GameBoard.selectTile(index, getActivePlayer());
-
-        switchPlayerTurn();
-        printNewRound();
+        const gameIsOver = checkGameOver();
+        if (!gameIsOver) {
+            switchPlayerTurn();
+        }
     }
+
+    const checkGameOver = () => {
+        const board = GameBoard.getBoard();
+        const wins = [
+            [0, 1, 2],
+            [0, 3, 6],
+            [0, 4, 8],
+            [1, 4, 7],
+            [2, 5, 8],
+            [3, 4, 5],
+            [6, 7, 8],
+            [2, 4, 6]
+        ];
+        // Check for a winner
+        for (const win of wins) {
+            if (board[win[0]] === board[win[1]] &&
+                board[win[0]] === board[win[2]] &&
+                board[win[0]] === activePlayer.marker) {
+                console.log(`${activePlayer.name} Wins!`);
+                return true;
+            }   
+        }
+        // Check for a tie
+        if (!board.includes(undefined)){
+            console.log("It's a tie!");
+            return true;
+        }
+    };
 
     return {
         playRound,
@@ -75,7 +98,9 @@ const ScreenController = (() => {
             const tile = document.createElement('div');
             tile.classList.add('tile');
             tile.dataset.index = index;
-            tile.innerHTML = value;
+            if (value) {
+                tile.innerHTML = value;
+            }
             tile.addEventListener("click", clickHandler)
             boardDiv.appendChild(tile);
         }
@@ -87,7 +112,6 @@ const ScreenController = (() => {
             GameController.playRound(index);
             updateScreen();
         }
-
     }
 
     // Initial render
