@@ -11,9 +11,9 @@
     <div class="content">
         <h1>Tic Tac Toe</h1>
         <div class="config">
-            <form action="">
-                <input type="text" id="player-x" placeholder="Player X" required>
-                <input type="text" id="player-o" placeholder="Player O" required>
+            <form id="config" action="">
+                <input type="text" name="player-x" id="player-x" placeholder="Player X" required>
+                <input type="text" name="player-o" id="player-o" placeholder="Player O" required>
                 <button type="submit" id="start-game">Start Game</button>
             </form>
         </div>
@@ -21,7 +21,8 @@
     </div>
     <div>Copyright &copy; Ed Newman 2023</div>
     <dialog>
-        <button>Play Again</button>
+        <p class="message"></p>
+        <button type="button" id="play-again">Play Again</button>
     </dialog>
 </body>
 </html>

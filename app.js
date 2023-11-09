@@ -48,16 +48,12 @@ const GameController = (() => {
     const playRound = (index) => {
         console.log(`${getActivePlayer().name} has placed ${getActivePlayer().marker} in index ${index}.`)
         GameBoard.selectTile(index, getActivePlayer());
-        const gameIsOver = checkGameOver();
-        if (!gameIsOver) {
+        const gameResult = checkGameOver();
+        if (!gameResult) {
             switchPlayerTurn();
-        } else {
-            const dialog = document.querySelector('dialog');
-            const message = document.createElement('p');
-            message.innerHTML = `Player ${activePlayer.marker} wins!`;
-            dialog.insertBefore(message, dialog.firstChild);
-            dialog.showModal();
+            return;
         }
+        ScreenController.endGame(gameResult)
     }
 
     const checkGameOver = () => {
@@ -79,19 +75,20 @@ const GameController = (() => {
                 board[win[0]] === board[win[2]] &&
                 board[win[0]] === activePlayer.marker) {
                 console.log(`${activePlayer.name} Wins!`);
-                return true;
+                return activePlayer;
             }   
         }
         // Check for a tie
         if (!board.includes(undefined)){
             console.log("It's a tie!");
-            return true;
+            return 'tie';
         }
         // Return False if game isn't over.
         return false;
     };
 
     const restartGame = () => {
+        activePlayer = players[0];
         GameBoard.resetBoard();
     }
 
@@ -104,16 +101,18 @@ const GameController = (() => {
 })();
 
 const ScreenController = (() => {
-    // Grab board div and board array
+    // Initiate elements
     const boardDiv = document.querySelector('#board');
     const board = GameBoard.getBoard();
-    const startGameButton = document.querySelector('#start-game');
-    const config = document.querySelector('.config');
+    const configForm = document.querySelector('#config');
+    const dialog = document.querySelector('dialog');
+    const message = document.querySelector('.message');
+    const playAgainBtn = document.querySelector('#play-again');
 
-    startGameButton.addEventListener("click", (e) => {
+    configForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        const formElements = e.target.closest('form').elements
-        config.style.display = "none";
+        const formElements = e.target.elements
+        configForm.style.display = "none";
         const playerNames = {
             xPlayerName: formElements["player-x"].value,
             oPlayerName: formElements["player-o"].value
@@ -121,6 +120,13 @@ const ScreenController = (() => {
         GameController.setPlayerNames(playerNames);
         updateBoard();
     });
+
+    playAgainBtn.addEventListener("click", () => {
+        dialog.close();
+        configForm.reset();
+        GameController.restartGame();
+        updateBoard();
+    })
 
     const updateBoard = () => {
         // Clear the board
@@ -138,6 +144,15 @@ const ScreenController = (() => {
         }
     }
 
+    const endGame = (gameResult) => {
+        if (gameResult === 'tie') {
+            message.innerHTML = "It's a tie!"
+        } else {
+            message.innerHTML = `${gameResult.name} wins!`;
+        }
+        dialog.showModal();
+    }
+
     const clickHandler = (e) => {
         const index = e.target.dataset.index;
         if (!board[index]){
@@ -146,5 +161,6 @@ const ScreenController = (() => {
         }
     }
 
+    return {endGame};
 })();
 
