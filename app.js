@@ -12,11 +12,18 @@ const GameBoard = (() => {
     const printBoard = () => {
         console.log(board);
     }
+
+    const resetBoard = () => {
+        for(const [index, value] of board.entries()) {
+            board[index] = undefined;
+        }
+    }
     
     return {
         getBoard,
         selectTile,
         printBoard,
+        resetBoard
     }
 })();
 
@@ -48,6 +55,9 @@ const GameController = (() => {
         const gameIsOver = checkGameOver();
         if (!gameIsOver) {
             switchPlayerTurn();
+        }
+        else {
+            GameBoard.resetBoard();
         }
     }
 
