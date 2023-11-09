@@ -44,6 +44,10 @@ dialog[open] {
 
 dialog p {
     text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 1rem;
+    color: var(--text);
 }
 
 button {
@@ -52,6 +56,19 @@ button {
     padding: 1rem 2rem;
     border-radius: 0.5rem;
     font-weight: bold;
+    background-color: var(--secondary);
+}
+
+input {
+    border: none;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .board {

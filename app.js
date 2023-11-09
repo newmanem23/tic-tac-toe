@@ -30,22 +30,18 @@ const GameBoard = (() => {
 
 const GameController = (() => {
     // Players array with player objects within
-    const players = [
-        {
-            name: 'Player',
-            marker: 'X'
-        },
-        {
-            name: 'Computer',
-            marker: 'O'
-        }
-    ];
+    const players =  [{marker: 'X'}, {marker: 'O'}];
     let activePlayer = players[0];
 
     // Switch player turn function
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
+
+    const setPlayerNames = (playerNames)  => {
+        players[0].name = playerNames.xPlayerName;
+        players[1].name = playerNames.oPlayerName;
+    }
 
     const getActivePlayer = () => activePlayer;
 
@@ -55,14 +51,12 @@ const GameController = (() => {
         const gameIsOver = checkGameOver();
         if (!gameIsOver) {
             switchPlayerTurn();
-        }
-        else {
+        } else {
             const dialog = document.querySelector('dialog');
             const message = document.createElement('p');
-            message.innerHTML = `${activePlayer.name} wins!`;
+            message.innerHTML = `Player ${activePlayer.marker} wins!`;
             dialog.insertBefore(message, dialog.firstChild);
             dialog.showModal();
-            GameBoard.resetBoard();
         }
     }
 
@@ -97,9 +91,15 @@ const GameController = (() => {
         return false;
     };
 
+    const restartGame = () => {
+        GameBoard.resetBoard();
+    }
+
     return {
         playRound,
         getActivePlayer,
+        restartGame,
+        setPlayerNames
     };
 })();
 
@@ -107,13 +107,22 @@ const ScreenController = (() => {
     // Grab board div and board array
     const boardDiv = document.querySelector('#board');
     const board = GameBoard.getBoard();
-    const restartButton = document.querySelector('#restart');
-    restartButton.addEventListener("click", () => {
-        GameBoard.resetBoard();
-        updateScreen();
+    const startGameButton = document.querySelector('#start-game');
+    const config = document.querySelector('.config');
+
+    startGameButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        const formElements = e.target.closest('form').elements
+        config.style.display = "none";
+        const playerNames = {
+            xPlayerName: formElements["player-x"].value,
+            oPlayerName: formElements["player-o"].value
+        }
+        GameController.setPlayerNames(playerNames);
+        updateBoard();
     });
 
-    const updateScreen = () => {
+    const updateBoard = () => {
         // Clear the board
         boardDiv.innerHTML = '';
         
@@ -133,10 +142,9 @@ const ScreenController = (() => {
         const index = e.target.dataset.index;
         if (!board[index]){
             GameController.playRound(index);
-            updateScreen();
+            updateBoard();
         }
     }
 
-    // Initial render
-    updateScreen();
 })();
+
