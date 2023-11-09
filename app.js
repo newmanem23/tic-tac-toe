@@ -102,8 +102,9 @@ const GameController = (() => {
 
 const ScreenController = (() => {
     // Initiate elements
-    const boardDiv = document.querySelector('#board');
     const board = GameBoard.getBoard();
+    const boardDiv = document.querySelector('#board');
+    const turn = document.querySelector('.turn');
     const configForm = document.querySelector('#config');
     const dialog = document.querySelector('dialog');
     const message = document.querySelector('.message');
@@ -131,6 +132,7 @@ const ScreenController = (() => {
     const updateBoard = () => {
         // Clear the board
         boardDiv.innerHTML = '';
+        turn.innerHTML = `${GameController.getActivePlayer().name}'s turn`
         
         for (const [index, value] of board.entries()) {
             const tile = document.createElement('div');

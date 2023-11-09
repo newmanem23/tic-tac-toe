@@ -48,6 +48,7 @@ dialog p {
     font-weight: bold;
     padding: 1rem;
     color: var(--text);
+    text-transform: capitalize;
 }
 
 button {
@@ -110,4 +111,12 @@ button:hover {
 .buttons {
     display: flex;
     gap: 0.5rem;
+}
+
+.turn {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    text-transform: capitalize;
 }
