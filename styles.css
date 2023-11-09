@@ -47,3 +47,24 @@ h1 {
     cursor: pointer;
     background-color: var(--accent);
 }
+
+.buttons button {
+    border: none;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 1rem 2rem;
+    background-color: var(--secondary);
+    flex: 1;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: var(--accent);
+}
+
+.buttons {
+    display: flex;
+    gap: 0.5rem;
+}

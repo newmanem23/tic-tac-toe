@@ -40,7 +40,6 @@ const GameController = (() => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
 
-    // Returns active player
     const getActivePlayer = () => activePlayer;
 
     const playRound = (index) => {
@@ -54,6 +53,7 @@ const GameController = (() => {
 
     const checkGameOver = () => {
         const board = GameBoard.getBoard();
+        // Possible win scenarios
         const wins = [
             [0, 1, 2],
             [0, 3, 6],
@@ -78,6 +78,8 @@ const GameController = (() => {
             console.log("It's a tie!");
             return true;
         }
+        // Return False if game isn't over.
+        return false;
     };
 
     return {
@@ -87,6 +89,7 @@ const GameController = (() => {
 })();
 
 const ScreenController = (() => {
+    // Grab board div and board array
     const boardDiv = document.querySelector('#board');
     const board = GameBoard.getBoard()
 
