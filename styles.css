@@ -17,7 +17,7 @@
 body {
     display: grid;
     place-items: center;
-    height: 75vh;
+    height: 100vh;
     background-color: var(--background);
     color: var(--primary);
 }
@@ -26,6 +26,32 @@ h1 {
     font-size: 48px;
     padding: 1rem;
     text-align: center;
+}
+
+dialog[open] {
+    border: none;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    position: absolute;
+    float: left;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+dialog p {
+    text-align: center;
+}
+
+button {
+    border: none;
+    font-size: 1rem;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
 }
 
 .board {
@@ -49,14 +75,14 @@ h1 {
 }
 
 .buttons button {
-    border: none;
-    font-size: 1rem;
-    font-weight: bold;
-    padding: 1rem 2rem;
     background-color: var(--secondary);
     flex: 1;
-    border-radius: 0.5rem;
     margin-bottom: 0.5rem;
+}
+
+.buttons button.selected {
+    background-color: var(--accent);
+    color: var(--background);
 }
 
 button:hover {

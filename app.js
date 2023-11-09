@@ -57,6 +57,11 @@ const GameController = (() => {
             switchPlayerTurn();
         }
         else {
+            const dialog = document.querySelector('dialog');
+            const message = document.createElement('p');
+            message.innerHTML = `${activePlayer.name} wins!`;
+            dialog.insertBefore(message, dialog.firstChild);
+            dialog.showModal();
             GameBoard.resetBoard();
         }
     }
@@ -101,7 +106,12 @@ const GameController = (() => {
 const ScreenController = (() => {
     // Grab board div and board array
     const boardDiv = document.querySelector('#board');
-    const board = GameBoard.getBoard()
+    const board = GameBoard.getBoard();
+    const restartButton = document.querySelector('#restart');
+    restartButton.addEventListener("click", () => {
+        GameBoard.resetBoard();
+        updateScreen();
+    });
 
     const updateScreen = () => {
         // Clear the board
