@@ -8,7 +8,7 @@ const GameBoard = (() => {
     // Assign value to tile based on player
     const selectTile = (index, player) => {
         if (!board[index]) {
-            board[index] = player.marker
+            board[index] = player.marker;
         }
     }
 
@@ -120,11 +120,11 @@ const ScreenController = (() => {
         // Hide the form
         configForm.style.display = "none";
         // Set player names
-        const formElements = e.target.elements
+        const formElements = e.target.elements;
         const playerNames = {
             xPlayerName: formElements["player-x"].value,
             oPlayerName: formElements["player-o"].value
-        }
+        };
         GameController.setPlayerNames(playerNames);
         updateBoard();
         configForm.reset();
@@ -135,7 +135,7 @@ const ScreenController = (() => {
         dialog.close();
         GameController.restartGame();
         updateBoard();
-    })
+    });
 
     // Set listener for menu button
     menuBtn.addEventListener("click", () => {
@@ -143,6 +143,7 @@ const ScreenController = (() => {
         boardDiv.innerHTML = '';
         turn.innerHTML = '';
         configForm.style.display = 'flex';
+        console.log("menu button");
     });
 
     const updateBoard = () => {
@@ -158,14 +159,14 @@ const ScreenController = (() => {
             if (value) {
                 tile.innerHTML = value;
             }
-            tile.addEventListener("click", clickHandler)
+            tile.addEventListener("click", clickHandler);
             boardDiv.appendChild(tile);
         }
     }
 
     const endGame = (gameResult) => {
         if (gameResult === 'tie') {
-            message.innerHTML = "It's a tie!"
+            message.innerHTML = "It's a tie!";
         } else {
             message.innerHTML = `${gameResult.name} wins!`;
         }
