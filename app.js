@@ -1,18 +1,18 @@
 const GameBoard = (() => {
+    // Initialize board Array
     const board = new Array(9);
 
+    // Exposed function to return board
     const getBoard = () => board;
     
+    // Assign value to tile based on player
     const selectTile = (index, player) => {
         if (!board[index]) {
             board[index] = player.marker
         }
     }
 
-    const printBoard = () => {
-        console.log(board);
-    }
-
+    // Reset board to all undefined for new game
     const resetBoard = () => {
         for(const [index, value] of board.entries()) {
             board[index] = undefined;
@@ -22,7 +22,6 @@ const GameBoard = (() => {
     return {
         getBoard,
         selectTile,
-        printBoard,
         resetBoard
     }
 })();
@@ -38,15 +37,17 @@ const GameController = (() => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
 
+    // Set player names based on form submission
     const setPlayerNames = (playerNames)  => {
         players[0].name = playerNames.xPlayerName;
         players[1].name = playerNames.oPlayerName;
     }
 
+    // Public function to get active player
     const getActivePlayer = () => activePlayer;
 
+    // Place tile and check for game result.
     const playRound = (index) => {
-        console.log(`${getActivePlayer().name} has placed ${getActivePlayer().marker} in index ${index}.`)
         GameBoard.selectTile(index, getActivePlayer());
         const gameResult = checkGameOver();
         if (!gameResult) {
@@ -56,6 +57,7 @@ const GameController = (() => {
         ScreenController.endGame(gameResult)
     }
 
+    // Returns winning player, 'tie', or false so the game continues
     const checkGameOver = () => {
         const board = GameBoard.getBoard();
         // Possible win scenarios
@@ -87,6 +89,7 @@ const GameController = (() => {
         return false;
     };
 
+    // Set start player and reset the board
     const restartGame = () => {
         activePlayer = players[0];
         GameBoard.resetBoard();
@@ -110,10 +113,13 @@ const ScreenController = (() => {
     const message = document.querySelector('.message');
     const playAgainBtn = document.querySelector('#play-again');
 
+    // Set listener for the player names form
     configForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        const formElements = e.target.elements
+        // Hide the form
         configForm.style.display = "none";
+        // Set player names
+        const formElements = e.target.elements
         const playerNames = {
             xPlayerName: formElements["player-x"].value,
             oPlayerName: formElements["player-o"].value
@@ -122,6 +128,7 @@ const ScreenController = (() => {
         updateBoard();
     });
 
+    // Set listener for the play again button
     playAgainBtn.addEventListener("click", () => {
         dialog.close();
         configForm.reset();
@@ -130,10 +137,11 @@ const ScreenController = (() => {
     })
 
     const updateBoard = () => {
-        // Clear the board
+        // Clear the board and identify who's turn it is
         boardDiv.innerHTML = '';
         turn.innerHTML = `${GameController.getActivePlayer().name}'s turn`
         
+        // Populate tile divs with the board
         for (const [index, value] of board.entries()) {
             const tile = document.createElement('div');
             tile.classList.add('tile');
@@ -162,7 +170,6 @@ const ScreenController = (() => {
             updateBoard();
         }
     }
-
     return {endGame};
 })();
 
