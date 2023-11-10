@@ -143,7 +143,6 @@ const ScreenController = (() => {
         boardDiv.innerHTML = '';
         turn.innerHTML = '';
         configForm.style.display = 'flex';
-        console.log("menu button");
     });
 
     const updateBoard = () => {
