@@ -112,6 +112,7 @@ const ScreenController = (() => {
     const dialog = document.querySelector('dialog');
     const message = document.querySelector('.message');
     const playAgainBtn = document.querySelector('#play-again');
+    const menuBtn = document.querySelector('#menu');
 
     // Set listener for the player names form
     configForm.addEventListener("submit", (e) => {
@@ -126,15 +127,23 @@ const ScreenController = (() => {
         }
         GameController.setPlayerNames(playerNames);
         updateBoard();
+        configForm.reset();
     });
 
     // Set listener for the play again button
     playAgainBtn.addEventListener("click", () => {
         dialog.close();
-        configForm.reset();
         GameController.restartGame();
         updateBoard();
     })
+
+    // Set listener for menu button
+    menuBtn.addEventListener("click", () => {
+        dialog.close();
+        boardDiv.innerHTML = '';
+        turn.innerHTML = '';
+        configForm.style.display = 'flex';
+    });
 
     const updateBoard = () => {
         // Clear the board and identify who's turn it is
