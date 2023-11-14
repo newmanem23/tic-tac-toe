@@ -125,8 +125,8 @@ const ScreenController = (() => {
             xPlayerName: formElements["player-x"].value,
             oPlayerName: formElements["player-o"].value
         };
-        GameBoard.resetBoard();
         GameController.setPlayerNames(playerNames);
+        GameController.restartGame();
         updateBoard();
         configForm.reset();
     });
